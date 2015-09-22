@@ -6,9 +6,9 @@ vagrant_user: vagrant
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: drupalvm.dev
-vagrant_machine_name: drupalvm
-vagrant_ip: 192.168.88.88
+vagrant_hostname: academyvm.dev
+vagrant_machine_name: academyvm
+vagrant_ip: 193.169.88.88
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -21,7 +21,7 @@ vagrant_public_ip: ""
 vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # build_makefile: is 'true'.
-  - local_path: ~/Sites/drupalvm
+  - local_path: ~/Sites/academyvm
     destination: /var/www
     type: nfs
     create: true
@@ -40,7 +40,7 @@ drush_makefile_path: /vagrant/drupal.make.yml
 
 # Set this to false if you don't need to install drupal (using the drupal_*
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
-install_site: true
+install_site: false
 
 # Settings for building a Drupal site from a makefile (if 'build_makefile:'
 # is 'true').
@@ -134,13 +134,13 @@ mysql_users:
 installed_extras:
   - adminer
   - mailhog
-  - memcached
+  # - memcached
   # - nodejs
   - pimpmylog
   # - ruby
   # - selenium
   # - solr
-  - varnish
+  # - varnish
   - xdebug
   - xhprof
 

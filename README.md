@@ -56,7 +56,7 @@ This Quick Start Guide will help you quickly build a Drupal 8 site on the Drupal
   1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (Drupal VM also works with Parallels or VMware, if you have the [Vagrant VMware integration plugin](http://www.vagrantup.com/vmware)).
   2. Download and install [Vagrant](http://www.vagrantup.com/downloads.html).
 
-Note for Faster Provisioning (Mac/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
+**@Debug Academy students: We will NOT be using ansible**, so this line does not apply to us -> Note for Faster Provisioning (Mac/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
 
 Note for Linux users: *If NFS is not already installed on your host, you will need to install it to use the default NFS synced folder configuration. See guides for [Debian/Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-14-04), [Arch](https://wiki.archlinux.org/index.php/NFS#Installation), and [RHEL/CentOS](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6).*
 
@@ -65,23 +65,31 @@ Note on versions: *Please make sure you're running the latest stable version of 
 ### 2 - Build the Virtual Machine
 
   1. Download this project and put it wherever you want.
+    - **@Debug Academy students:** This step was completed when you cloned this repository. No need to repeat.
   2. Make copies of both of the `example.*` files, and modify to your liking:
     - Copy `example.drupal.make.yml` to `drupal.make.yml`.
     - Copy `example.config.yml` to `config.yml`.
-  3. Create a local directory where Drupal will be installed and configure the path to that directory in `config.yml` (`local_path`, inside `vagrant_synced_folders`).
+    - **@Debug Academy:** These files do need to be cloned, but do not need to be modified at all.
+  3. Edit `config.yml`, set (`local_path`, inside `vagrant_synced_folders`) to the directory you created for your sites to reside.
+    - For example, I created: I will be using ~/Desktop/DebugAcademy/Sites
   4. Open Terminal, cd to this directory (containing the `Vagrantfile` and this README file).
+    - This is the directory named 'academyvm'
+    - See 001_command_line_basics.md for information on how to cd
   5. Type in `vagrant up`, and let Vagrant do its magic.
 
+@Debug Academy: We are not using Ansible.
 If you have Ansible installed on your host machine: Run `$ sudo ansible-galaxy install -r provisioning/requirements.yml --force` prior to step 5 (`vagrant up`), otherwise Ansible will complain about missing roles.
 
 Note: *If there are any errors during the course of running `vagrant up`, and it drops you back to your command prompt, just run `vagrant provision` to continue building the VM from where you left off. If there are still errors after doing this a few times, post an issue to this project's issue queue on GitHub with the error.*
 
 ### 3 - Configure your host machine to access the VM.
 
-  1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the line `192.168.88.88  drupalvm.dev` so you can connect to the VM.
+  1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the line `193.169.88.88  academyvm.dev` so you can connect to the VM.
     - You can have Vagrant automatically configure your hosts file if you install the `hostsupdater` plugin (`vagrant plugin install vagrant-hostsupdater`). All hosts defined in `apache_vhosts` or `nginx_hosts` will be automatically managed.
     - You can also have Vagrant automatically assign an available IP address to your VM if you install the `auto_network` plugin (`vagrant plugin install vagrant-auto_network`), and set `vagrant_ip` to `0.0.0.0` inside `config.yml`.
-  2. Open your browser and access [http://drupalvm.dev/](http://drupalvm.dev/). The default login for the admin account is `admin` for both the username and password.
+  2. Open your browser and access [http://academyvm.dev/](http://academyvm.dev/). The default login for the admin account is `admin` for both the username and password.
+
+**@Debug Academy students:** At this point, you are done setting up your vm. Reading more of this file is welcome and encouraged!
 
 ## Extra software/utilities
 
