@@ -87,9 +87,10 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
   1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the line `193.169.88.88  academyvm.dev` so you can connect to the VM.
     - You can have Vagrant automatically configure your hosts file if you install the `hostsupdater` plugin (`vagrant plugin install vagrant-hostsupdater`). All hosts defined in `apache_vhosts` or `nginx_hosts` will be automatically managed.
     - You can also have Vagrant automatically assign an available IP address to your VM if you install the `auto_network` plugin (`vagrant plugin install vagrant-auto_network`), and set `vagrant_ip` to `0.0.0.0` inside `config.yml`.
+    - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
   2. Open your browser and access [http://academyvm.dev/](http://academyvm.dev/). The default login for the admin account is `admin` for both the username and password.
 
-**@Debug Academy students:** At this point, you are done setting up your vm. Reading more of this file is welcome and encouraged!
+**@Debug Academy students:** At this point, you are done setting up your vm. There is nothing else to do here for this section - jump back to the document that sent you here! Reading more of this file is welcome and encouraged!
 
 ## Extra software/utilities
 
