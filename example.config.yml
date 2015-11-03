@@ -117,9 +117,6 @@ apache_vhosts:
   - servername: "{{ php_drupal_domain }}"
     documentroot: "{{ php_drupal_core_path }}"
 
-  - servername: "othersite.academyvm.dev"
-    documentroot: "var/www/drop"
-
   - servername: "adminer.academyvm.dev"
     documentroot: "/opt/adminer"
 
@@ -277,5 +274,8 @@ solr_version: "4.10.4"
 solr_xms: "64M"
 solr_xmx: "128M"
 
-# Selenium configuration
+# Selenium configuration.
 selenium_version: 2.46.0
+
+# Other configuration.
+known_hosts_path: ~/.ssh/known_hosts
