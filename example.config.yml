@@ -7,8 +7,14 @@ vagrant_user: vagrant
 ha_drupal_domain: ha.academyvm.dev
 ha_drupal_core_path: "/var/www/ha"
 
+ha_prod_drupal_domain: ha-prod.academyvm.dev
+ha_prod_drupal_core_path: "/var/www/ha-prod"
+
 cg_drupal_domain: cg.academyvm.dev
 cg_drupal_core_path: "/var/www/cg"
+
+cg_prod_drupal_domain: cg-prod.academyvm.dev
+cg_prod_drupal_core_path: "/var/www/cg-prod"
 
 php_drupal_domain: php.academyvm.dev
 php_drupal_core_path: "/var/www/php"
@@ -43,9 +49,21 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
+  - local_path: ~/Sites/haacademyvm-prod
+    destination: /var/www/ha-prod
+    id: hap
+    type: nfs
+    create: true
+
   - local_path: ~/Sites/cgacademyvm
     destination: /var/www/cg
     id: cgd
+    type: nfs
+    create: true
+
+  - local_path: ~/Sites/cgacademyvm-prod
+    destination: /var/www/cg-prod
+    id: cgp
     type: nfs
     create: true
 
@@ -64,7 +82,7 @@ drupalvm_webserver: apache
 
 # Set this to false if you are using a different site deployment strategy and
 # would like to configure 'vagrant_synced_folders' and 'apache_vhosts' manually.
-build_makefile: true
+build_makefile: false
 drush_makefile_path: /vagrant/drupal.make.yml
 
 # Set this to false if you don't need to install drupal (using the drupal_*
@@ -75,7 +93,7 @@ install_site: false
 # is 'true').
 drupal_major_version: 7
 drupal_core_path: "/var/www/public_html"
-# drupal_domain: dr.academyvm.dev
+drupal_domain: academyvm.dev
 drupal_site_name: "Drupal"
 drupal_install_profile: standard
 drupal_enable_modules: [ 'devel' ]
@@ -111,8 +129,14 @@ apache_vhosts:
   - servername: "{{ ha_drupal_domain }}"
     documentroot: "{{ ha_drupal_core_path }}"
 
+  - servername: "{{ ha_prod_drupal_domain }}"
+    documentroot: "{{ ha_prod_drupal_core_path }}"
+
   - servername: "{{ cg_drupal_domain }}"
     documentroot: "{{ cg_drupal_core_path }}"
+
+  - servername: "{{ cg_prod_drupal_domain }}"
+    documentroot: "{{ cg_prod_drupal_core_path }}"
 
   - servername: "{{ php_drupal_domain }}"
     documentroot: "{{ php_drupal_core_path }}"
@@ -140,12 +164,20 @@ nginx_hosts:
     root: "{{ drupal_core_path }}"
     is_php: true
 
+  - server_name: "{{ ha_drupal_domain }}"
+    root: "{{ ha_drupal_core_path }}"
+    is_php: true
+
+  - server_name: "{{ ha_prod_drupal_domain }}"
+    root: "{{ ha_prod_drupal_core_path }}"
+    is_php: true
+
   - server_name: "{{ cg_drupal_domain }}"
     root: "{{ cg_drupal_core_path }}"
     is_php: true
 
-  - server_name: "{{ ha_drupal_domain }}"
-    root: "{{ ha_drupal_core_path }}"
+  - server_name: "{{ cg_prod_drupal_domain }}"
+    root: "{{ cg_prod_drupal_core_path }}"
     is_php: true
 
   - server_name: "{{ php_drupal_domain }}"

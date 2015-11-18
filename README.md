@@ -72,6 +72,7 @@ Note on versions: *Please make sure you're running the latest stable version of 
     - **@Debug Academy:** These files do need to be cloned, but do not need to be modified at all.
   3. Edit `config.yml`, set (`local_path`, inside `vagrant_synced_folders`) to the directory you created for your sites to reside.
     - For example, I created: I will be using ~/Desktop/DebugAcademy/Sites
+    - Edit *each* local_path variable appropriately. Just update paths from, for example, ~/Sites/haacademyvm, to the location your 'ha' repo resides.
   4. Open Terminal, cd to this directory (containing the `Vagrantfile` and this README file).
     - This is the directory named 'academyvm'
     - See 001_command_line_basics.md for information on how to cd
