@@ -3,6 +3,7 @@
 # geerlingguy/ubuntu1204, parallels/ubuntu-14.04, etc.
 vagrant_box: geerlingguy/ubuntu1404
 vagrant_user: vagrant
+vagrant_synced_folder_default_type: nfs
 
 ha_drupal_domain: ha.academyvm.dev
 ha_drupal_core_path: "/var/www/ha"
@@ -32,7 +33,7 @@ vagrant_ip: 193.169.88.88
 # See: https://docs.vagrantup.com/v2/networking/public_network.html
 vagrant_public_ip: ""
 
-# A list of synced folders, with the keys 'local_path', 'destination', 'id', and
+# A list of synced folders, with the keys 'local_path', 'destination', and
 # a 'type' of [nfs|rsync|smb] (leave empty for slow native shares). See
 # http://docs.drupalvm.com/en/latest/extras/syncing-folders/ for more info.
 vagrant_synced_folders:
@@ -125,6 +126,8 @@ configure_local_drush_aliases: true
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
 
   - servername: "{{ ha_drupal_domain }}"
     documentroot: "{{ ha_drupal_core_path }}"
@@ -143,18 +146,26 @@ apache_vhosts:
 
   - servername: "adminer.academyvm.dev"
     documentroot: "/opt/adminer"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/opt/adminer"
 
   - servername: "xhprof.academyvm.dev"
     documentroot: "/usr/share/php/xhprof_html"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/usr/share/php/xhprof_html"
 
   - servername: "pimpmylog.academyvm.dev"
     documentroot: "/usr/share/php/pimpmylog"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/usr/share/php/pimpmylog"
 
 apache_remove_default_vhost: true
 apache_mods_enabled:
   - expires.load
   - ssl.load
   - rewrite.load
+  - proxy.load
+  - proxy_fcgi.load
 
 # Nginx hosts. Each site will get a server entry using the configuration defined
 # here. Set the 'is_php' property for document roots that contain PHP apps like
@@ -215,10 +226,12 @@ mysql_users:
 # to install *any* extras, make set this value to an empty set, e.g. `[]`.
 installed_extras:
   - adminer
+  - drupalconsole
   - mailhog
   # - memcached
   # - nodejs
   - pimpmylog
+  # - redis
   # - ruby
   # - selenium
   # - solr
@@ -235,12 +248,13 @@ nodejs_version: "0.12"
 nodejs_npm_global_packages: []
 
 # `ruby` must be in installed_extras for this to work.
+ruby_install_gems_user: "{{ vagrant_user }}"
 ruby_install_gems: []
 
 # You can configure almost anything else on the server in the rest of this file.
 extra_security_enabled: false
 
-drush_version: master
+drush_version: "master"
 drush_keep_updated: true
 drush_composer_cli_options: "--prefer-dist --no-interaction"
 
@@ -257,7 +271,7 @@ firewall_allowed_tcp_ports:
   - "8983"
 firewall_log_dropped_packets: false
 
-# PHP Configuration. Currently-supported versions: 5.5, 5.6, 7.0 (experimental).
+# PHP Configuration. Currently-supported versions: 5.5, 5.6, 7.0.
 php_version: "5.6"
 php_memory_limit: "192M"
 php_display_errors: "On"
@@ -269,10 +283,21 @@ php_opcache_memory_consumption: "192"
 php_opcache_max_accelerated_files: 4096
 php_max_input_vars: "4000"
 
+# Drupal VM defaults to using PHP-FPM with either Apache or Nginx. If you wish
+# to instead use Apache + mod_php with an Ubuntu base box, make sure you add
+# libapache2-mod-php5 to `extra_packages` elsewhere in this config file.
+php_enable_php_fpm: true
+php_fpm_listen: "127.0.0.1:9000"
+
 composer_path: /usr/bin/composer
 composer_home_path: '/home/vagrant/.composer'
 # composer_global_packages:
 #   - { name: phpunit/phpunit, release: '@stable' }
+
+# Run specified scripts after VM is provisioned. Path is relative to the
+# `provisioning/playbook.yml` file.
+post_provision_scripts: []
+  # - "../examples/scripts/configure-solr.sh"
 
 # MySQL Configuration.
 mysql_root_password: root
@@ -294,7 +319,7 @@ pimpmylog_grant_all_privs: true
 # XDebug configuration. XDebug is disabled by default for better performance.
 php_xdebug_default_enable: 0
 php_xdebug_coverage_enable: 0
-php_xdebug_cli_enable: 0
+php_xdebug_cli_enable: 1
 php_xdebug_remote_enable: 1
 php_xdebug_remote_connect_back: 1
 # Use PHPSTORM for PHPStorm, sublime.xdebug for Sublime Text.
