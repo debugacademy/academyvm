@@ -23,9 +23,7 @@ php_drupal_core_path: "/var/www/php"
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
 vagrant_hostname: academyvm.dev
-
 vagrant_machine_name: academyvm
-
 vagrant_ip: 193.169.88.88
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
@@ -37,6 +35,8 @@ vagrant_public_ip: ""
 # a 'type' of [nfs|rsync|smb] (leave empty for slow native shares). See
 # http://docs.drupalvm.com/en/latest/extras/syncing-folders/ for more info.
 vagrant_synced_folders:
+  # The first synced folder will be used for the default Drupal installation, if
+  # build_makefile: is 'true'.
   # The first synced folder will be used for the default Drupal installation, if
   # build_makefile: is 'true'.
   - local_path: ~/Sites/academyvm
@@ -131,18 +131,28 @@ apache_vhosts:
 
   - servername: "{{ ha_drupal_domain }}"
     documentroot: "{{ ha_drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ ha_drupal_core_path }}"
 
   - servername: "{{ ha_prod_drupal_domain }}"
     documentroot: "{{ ha_prod_drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ ha_prod_drupal_core_path }}"
 
   - servername: "{{ cg_drupal_domain }}"
     documentroot: "{{ cg_drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ cg_drupal_core_path }}"
 
   - servername: "{{ cg_prod_drupal_domain }}"
     documentroot: "{{ cg_prod_drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ cg_prod_drupal_core_path }}"
 
   - servername: "{{ php_drupal_domain }}"
     documentroot: "{{ php_drupal_core_path }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_drupal_core_path }}"
 
   - servername: "adminer.academyvm.dev"
     documentroot: "/opt/adminer"
