@@ -5,17 +5,17 @@ vagrant_box: geerlingguy/ubuntu1404
 vagrant_user: vagrant
 vagrant_synced_folder_default_type: nfs
 
-ha_drupal_domain: ha.academyvm.dev
-ha_drupal_core_path: "/var/www/ha"
+ha_drupal_domain: dev-1.academyvm.dev
+ha_drupal_core_path: "/var/www/dev-1"
 
-ha_prod_drupal_domain: ha-prod.academyvm.dev
-ha_prod_drupal_core_path: "/var/www/ha-prod"
+ha_prod_drupal_domain: stage-1.academyvm.dev
+ha_prod_drupal_core_path: "/var/www/stage-1"
 
-cg_drupal_domain: cg.academyvm.dev
-cg_drupal_core_path: "/var/www/cg"
+cg_drupal_domain: dev-2.academyvm.dev
+cg_drupal_core_path: "/var/www/dev-2"
 
-cg_prod_drupal_domain: cg-prod.academyvm.dev
-cg_prod_drupal_core_path: "/var/www/cg-prod"
+cg_prod_drupal_domain: stage-2.academyvm.dev
+cg_prod_drupal_core_path: "/var/www/stage-2"
 
 php_drupal_domain: php.academyvm.dev
 php_drupal_core_path: "/var/www/php"
@@ -44,31 +44,31 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-  - local_path: ~/Sites/haacademyvm
-    destination: /var/www/ha
+  - local_path: ../sites/dev-1
+    destination: /var/www/dev-1
     id: had
     type: nfs
     create: true
 
-  - local_path: ~/Sites/haacademyvm-prod
-    destination: /var/www/ha-prod
+  - local_path: ../sites/dev-2
+    destination: /var/www/dev-2
     id: hap
     type: nfs
     create: true
 
-  - local_path: ~/Sites/cgacademyvm
-    destination: /var/www/cg
+  - local_path: ../sites/stage-1
+    destination: /var/www/stage-1
     id: cgd
     type: nfs
     create: true
 
-  - local_path: ~/Sites/cgacademyvm-prod
-    destination: /var/www/cg-prod
+  - local_path: ../sites/stage-2
+    destination: /var/www/stage-2
     id: cgp
     type: nfs
     create: true
 
-  - local_path: ~/Sites/phpacademyvm
+  - local_path: ../sites/php
     destination: /var/www/php
     id: phpt
     type: nfs
