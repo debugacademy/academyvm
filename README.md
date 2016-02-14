@@ -72,20 +72,18 @@ Note on versions: *Please make sure you're running the latest stable version of 
     - Copy `example.config.yml` to `config.yml`.
     - **@Debug Academy:** These files do need to be cloned, but do not need to be modified at all.
   3. Edit `config.yml`, set (`local_path`, inside `vagrant_synced_folders`) to the directory you created for your sites to reside.
-    - For example, I created: I will be using ~/Desktop/DebugAcademy/Sites
-    - Edit *each* local_path variable appropriately. Just update paths from, for example, ~/Sites/haacademyvm, to the location your 'ha' repo resides.
+    - For example, I will be using ~/Desktop/debugacademy/sites/stage
+    - Edit *each* local_path variable appropriately. Just update paths from, for example, ~/Sites/haacademyvm, to the location your first site repo resides.
+    - You can use relative paths! 
+       - For example, you could use this path: `../sites/stage`
   4. Open Terminal, cd to this directory (containing the `Vagrantfile` and this README file).
-<<<<<<< HEAD
     - This is the directory named 'academyvm'
     - See 001_command_line_basics.md for information on how to cd
-  5. Type in `vagrant up`, and let Vagrant do its magic.
-
-@Debug Academy: We are not using Ansible.
-If you have Ansible installed on your host machine: Run `$ sudo ansible-galaxy install -r provisioning/requirements.yml --force` prior to step 5 (`vagrant up`), otherwise Ansible will complain about missing roles.
-=======
-  5. (If you have Ansible installed on Mac/Linux) Run `$ sudo ansible-galaxy install -r provisioning/requirements.yml --force`.
+  5. Run the following commands, one by one:
+    - ```sudo easy_install pip```
+    - ```sudo pip install ansible```
+    - ```sudo ansible-galaxy install -r provisioning/requirements.yml --force```
   6. Type in `vagrant up`, and let Vagrant do its magic.
->>>>>>> geerlingguy/master
 
 Note: *If there are any errors during the course of running `vagrant up`, and it drops you back to your command prompt, just run `vagrant provision` to continue building the VM from where you left off. If there are still errors after doing this a few times, post an issue to this project's issue queue on GitHub with the error.*
 
