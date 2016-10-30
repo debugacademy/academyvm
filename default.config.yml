@@ -17,6 +17,9 @@ cg_drupal_core_path: "/var/www/dev-2"
 cg_prod_drupal_domain: stage-2.academyvm.dev
 cg_prod_drupal_core_path: "/var/www/stage-2"
 
+php_drupal_domain: php.academyvm.dev
+php_drupal_core_path: "/var/www/php"
+
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
 vagrant_hostname: academyvm.dev
@@ -103,13 +106,13 @@ drupal_composer_dependencies:
 
 # Set this to 'true' and 'build_makefile', 'build_composer' to 'false' if you
 # are using Composer's create-project as a site deployment strategy.
-build_composer_project: true
+build_composer_project: false
 drupal_composer_project_package: "drupal-composer/drupal-project:8.x-dev"
 drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction"
 
 # Set this to 'false' if you don't need to install drupal (using the drupal_*
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
-install_site: true
+install_site: false
 
 # Required Drupal settings.
 drupal_core_path: "{{ drupal_composer_install_dir }}/web"
@@ -211,6 +214,26 @@ apache_mods_enabled:
 nginx_hosts:
   - server_name: "{{ drupal_domain }} www.{{ drupal_domain }}"
     root: "{{ drupal_core_path }}"
+    is_php: true
+
+  - servername: "{{ ha_drupal_domain }}"
+    root: "{{ ha_drupal_core_path }}"
+    is_php: true
+
+  - servername: "{{ ha_prod_drupal_domain }}"
+    root: "{{ ha_prod_drupal_core_path }}"
+    is_php: true
+
+  - servername: "{{ cg_drupal_domain }}"
+    root: "{{ cg_drupal_core_path }}"
+    is_php: true
+
+  - servername: "{{ cg_prod_drupal_domain }}"
+    root: "{{ cg_prod_drupal_core_path }}"
+    is_php: true
+
+  - servername: "{{ php_drupal_domain }}"
+    root: "{{ php_drupal_core_path }}"
     is_php: true
 
   - server_name: "adminer.{{ vagrant_hostname }}"
