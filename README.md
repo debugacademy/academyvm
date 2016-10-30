@@ -72,15 +72,18 @@ You can also use an alternative provider like Parallels or VMware. (Parallels De
 
 Notes:
 
-  - **For faster provisioning** (macOS/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
+  - @Debug Academy students: We will NOT be using ansible**, so this line does not apply to us -> **For faster provisioning** (macOS/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
   - **NFS on Linux**: *If NFS is not already installed on your host, you will need to install it to use the default NFS synced folder configuration. See guides for [Debian/Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-14-04), [Arch](https://wiki.archlinux.org/index.php/NFS#Installation), and [RHEL/CentOS](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6).*
   - **Versions**: *Make sure you're running the latest releases of Vagrant, VirtualBox, and Ansible—as of February 2016, Drupal VM recommends: Vagrant 1.8.5, VirtualBox 5.1.x, and Ansible 2.1.x.*
 
 ### 2 - Build the Virtual Machine
 
   1. Download this project and put it wherever you want.
-  2. (Optional) Copy `default.config.yml` to `config.yml` and modify it to your liking.
+    - **@Debug Academy students:** This step was completed when you cloned this repository. No need to repeat.
+  2. Copy `default.config.yml` to `config.yml` and modify it to your liking.
+    - **@Debug Academy:** These files do need to be cloned, but do not need to be modified at all.
   3. Create a local directory where Drupal will be installed and configure the path to that directory in `config.yml` (`local_path`, inside `vagrant_synced_folders`).
+    - **@Debug Academy:** Skip this step, we did it already.
   4. Open Terminal, `cd` to this directory (containing the `Vagrantfile` and this README file).
   5. Type in `vagrant up`, and let Vagrant do its magic.
 
@@ -91,9 +94,13 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
 ### 3 - Configure your host machine to access the VM.
 
   1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the line `192.168.88.88  drupalvm.dev` so you can connect to the VM.
-    - You can have Vagrant automatically configure your hosts file if you install the `hostsupdater` plugin (`vagrant plugin install vagrant-hostsupdater`). All hosts defined in `apache_vhosts` or `nginx_hosts` will be automatically managed. `vagrant-hostmanager` is also supported.
-    - The `auto_network` plugin (`vagrant plugin install vagrant-auto_network`) can help with IP address management if you set `vagrant_ip` to `0.0.0.0` inside `config.yml`.
-  2. Open your browser and access [http://drupalvm.dev/](http://drupalvm.dev/). The default login for the admin account is `admin` for both the username and password.
+    - @Debug Academy: add the line `192.170.88.88  academyvm.dev` so you can connect to the VM.
+    - @Debug Academy: Skip this line: You can have Vagrant automatically configure your hosts file if you install the `hostsupdater` plugin (`vagrant plugin install vagrant-hostsupdater`). All hosts defined in `apache_vhosts` or `nginx_hosts` will be automatically managed. `vagrant-hostmanager` is also supported.
+    - @Debug Academy: Skip this line: The `auto_network` plugin (`vagrant plugin install vagrant-auto_network`) can help with IP address management if you set `vagrant_ip` to `0.0.0.0` inside `config.yml`.
+    - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
+  2. Open your browser and access [http://academyvm.dev/](http://academyvm.dev/). The default login for the admin account is `admin` for both the username and password.
+
++**@Debug Academy students:** At this point, you are done setting up your vm. There is nothing else to do here for this section - jump back to the document that sent you here! Reading more of this file is welcome and encouraged!
 
 ## Extra software/utilities
 
