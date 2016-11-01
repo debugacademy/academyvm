@@ -54,19 +54,12 @@ If you want to switch from Drupal 8 (default) to Drupal 7 on the initial install
 
 ## Quick Start Guide
 
-This Quick Start Guide will help you quickly build a Drupal 8 site on the Drupal VM using Composer with `drupal-project`. You can also use Drupal VM with [Composer](http://docs.drupalvm.com/en/latest/deployment/composer/), a [Drush Make file](http://docs.drupalvm.com/en/latest/deployment/drush-make/), with a [Local Drupal codebase](http://docs.drupalvm.com/en/latest/deployment/local-codebase/), or even a [Drupal multisite installation](http://docs.drupalvm.com/en/latest/deployment/multisite/).
 
-If you want to install a Drupal 8 site locally with minimal fuss, just:
-
-  1. Install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
-  2. Download or clone this project to your workstation.
-  3. `cd` into this project directory and run `vagrant up`.
-
-But Drupal VM allows you to build your site exactly how you like, using whatever tools you need, with almost infinite flexibility and customization!
+This Quick Start Guide will help you quickly build a Drupal site on the Drupal VM using Composer with `drupal-project`. You can also use Drupal VM with [Composer](http://docs.drupalvm.com/en/latest/deployment/composer/), a [Drush Make file](http://docs.drupalvm.com/en/latest/deployment/drush-make/), with a [Local Drupal codebase](http://docs.drupalvm.com/en/latest/deployment/local-codebase/), or even a [Drupal multisite installation](http://docs.drupalvm.com/en/latest/deployment/multisite/).
 
 ### 1 - Install Vagrant and VirtualBox
 
-Download and install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+Download and install [Vagrant](https://www.vagrantup.com/downloads.html) **Version 1.8.5, NOT the latest!** and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
 You can also use an alternative provider like Parallels or VMware. (Parallels Desktop 11+ requires the "Pro" or "Business" edition and the [Parallels Provider](http://parallels.github.io/vagrant-parallels/), and VMware requires the paid [Vagrant VMware integration plugin](http://www.vagrantup.com/vmware)).
 
@@ -74,7 +67,7 @@ Notes:
 
   - @Debug Academy students: We will NOT be using ansible**, so this line does not apply to us -> **For faster provisioning** (macOS/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
   - **NFS on Linux**: *If NFS is not already installed on your host, you will need to install it to use the default NFS synced folder configuration. See guides for [Debian/Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-14-04), [Arch](https://wiki.archlinux.org/index.php/NFS#Installation), and [RHEL/CentOS](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6).*
-  - **Versions**: *Make sure you're running the latest releases of Vagrant, VirtualBox, and Ansible—as of February 2016, Drupal VM recommends: Vagrant 1.8.5, VirtualBox 5.1.x, and Ansible 2.1.x.*
+  - **Versions**: *Make sure you're running Vagrant 1.8.5 and the latest releases of VirtualBox and Ansible—as of February 2016, Drupal VM recommends: Vagrant 1.8.5, VirtualBox 5.1.x, and Ansible 2.1.x.*
 
 ### 2 - Build the Virtual Machine
 
@@ -93,14 +86,21 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
 
 ### 3 - Configure your host machine to access the VM.
 
-  1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the line `192.168.88.88  drupalvm.dev` so you can connect to the VM.
-    - @Debug Academy: add the line `192.170.88.88  academyvm.dev` so you can connect to the VM.
-    - @Debug Academy: Skip this line: You can have Vagrant automatically configure your hosts file if you install the `hostsupdater` plugin (`vagrant plugin install vagrant-hostsupdater`). All hosts defined in `apache_vhosts` or `nginx_hosts` will be automatically managed. `vagrant-hostmanager` is also supported.
-    - @Debug Academy: Skip this line: The `auto_network` plugin (`vagrant plugin install vagrant-auto_network`) can help with IP address management if you set `vagrant_ip` to `0.0.0.0` inside `config.yml`.
+  1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the below lines so you can connect to the VM.
+
+    - @Debug Academy: add each of the below lines to your hosts file so you can connect to the VM.
+      - ```192.170.88.88  academyvm.dev```
+      - ```192.170.88.88  dev-1.academyvm.dev```
+      - ```192.170.88.88  dev-2.academyvm.dev```
+      - ```192.170.88.88  stage-1.academyvm.dev```
+      - ```192.170.88.88  stage-2.academyvm.dev```
+      - ```192.170.88.88  php.academyvm.dev```
+
     - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
+
   2. Open your browser and access [http://academyvm.dev/](http://academyvm.dev/). The default login for the admin account is `admin` for both the username and password.
 
-+**@Debug Academy students:** At this point, you are done setting up your vm. There is nothing else to do here for this section - jump back to the document that sent you here! Reading more of this file is welcome and encouraged!
+**@Debug Academy students:** At this point, you are done setting up your vm. There is nothing else to do here for this section - jump back to the document that sent you here! Reading more of this file is welcome and encouraged!
 
 ## Extra software/utilities
 
