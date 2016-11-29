@@ -95,6 +95,10 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
       - ```192.170.88.88  stage-1.academyvm.dev```
       - ```192.170.88.88  stage-2.academyvm.dev```
       - ```192.170.88.88  php.academyvm.dev```
+      - ```192.170.88.88  adminer.academyvm.dev```
+      - ```192.170.88.88  xhprof.academyvm.dev```
+      - ```192.170.88.88  pimpmylog.academyvm.dev```
+      - ```192.170.88.88  dashboard.academyvm.dev```
 
     - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
 
