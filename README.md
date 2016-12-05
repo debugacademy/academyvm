@@ -59,7 +59,7 @@ This Quick Start Guide will help you quickly build a Drupal site on the Drupal V
 
 ### 1 - Install Vagrant and VirtualBox
 
-Download and install [Vagrant](https://www.vagrantup.com/downloads.html) **Version 1.8.5, NOT the latest!** and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+Download and install the latest version of [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
 You can also use an alternative provider like Parallels or VMware. (Parallels Desktop 11+ requires the "Pro" or "Business" edition and the [Parallels Provider](http://parallels.github.io/vagrant-parallels/), and VMware requires the paid [Vagrant VMware integration plugin](http://www.vagrantup.com/vmware)).
 
