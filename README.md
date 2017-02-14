@@ -11,10 +11,10 @@ It will install the following on an Ubuntu 16.04 (by default) linux VM:
   - Apache 2.4.x (or Nginx)
   - PHP 7.0.x (configurable)
   - MySQL 5.7.x (or MariaDB, or PostgreSQL)
-  - Drush (configurable)
-  - Drupal 7.x, or 8.x.x (configurable)
+  - Drupal 7 or 8
   - Optional:
     - Drupal Console
+    - Drush
     - Varnish 4.x (configurable)
     - Apache Solr 4.10.x (configurable)
     - Elasticsearch
@@ -24,8 +24,7 @@ It will install the following on an Ubuntu 16.04 (by default) linux VM:
     - Memcached
     - Redis
     - SQLite
-    - XHProf, for profiling your code
-    - Blackfire, for profiling your code
+    - Blackfire, XHProf, or Tideways for profiling your code
     - XDebug, for debugging your code
     - Adminer, for accessing databases directly
     - Pimp my Log, for easy viewing of log files
@@ -66,8 +65,9 @@ You can also use an alternative provider like Parallels or VMware. (Parallels De
 Notes:
 
   - @Debug Academy students: We will NOT be using ansible**, so this line does not apply to us -> **For faster provisioning** (macOS/Linux only): *[Install Ansible](http://docs.ansible.com/intro_installation.html) on your host machine, so Drupal VM can run the provisioning steps locally instead of inside the VM.*
+  - **For stability**: Because every version of VirtualBox introduces changes to networking, for the best stability, you should install Vagrant's `vbguest` plugin: `vagrant plugin install vagrant-vbguest`.
   - **NFS on Linux**: *If NFS is not already installed on your host, you will need to install it to use the default NFS synced folder configuration. See guides for [Debian/Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-14-04), [Arch](https://wiki.archlinux.org/index.php/NFS#Installation), and [RHEL/CentOS](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-centos-6).*
-  - **Versions**: *Make sure you're running the latest releases of Vagrant, VirtualBox, and Ansible—as of February 2016, Drupal VM recommends: Vagrant 1.8.6, VirtualBox 5.1.8+, and Ansible 2.2.x*
+  - **Versions**: *Make sure you're running the latest releases of Vagrant, VirtualBox, and Ansible—as of late 2016, Drupal VM recommends: Vagrant 1.8.6, VirtualBox 5.1.10+, and Ansible 2.2.x*
 
 ### 2 - Build the Virtual Machine
 
@@ -89,16 +89,16 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
   1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the below lines so you can connect to the VM.
 
     - @Debug Academy: add each of the below lines to your hosts file so you can connect to the VM.
-      - ```192.170.88.88  academyvm.dev```
-      - ```192.170.88.88  dev-1.academyvm.dev```
-      - ```192.170.88.88  dev-2.academyvm.dev```
-      - ```192.170.88.88  stage-1.academyvm.dev```
-      - ```192.170.88.88  stage-2.academyvm.dev```
-      - ```192.170.88.88  php.academyvm.dev```
-      - ```192.170.88.88  adminer.academyvm.dev```
-      - ```192.170.88.88  xhprof.academyvm.dev```
-      - ```192.170.88.88  pimpmylog.academyvm.dev```
-      - ```192.170.88.88  dashboard.academyvm.dev```
+      - ```192.170.88.89  academyvm.dev```
+      - ```192.170.88.89  dev-1.academyvm.dev```
+      - ```192.170.88.89  dev-2.academyvm.dev```
+      - ```192.170.88.89  stage-1.academyvm.dev```
+      - ```192.170.88.89  stage-2.academyvm.dev```
+      - ```192.170.88.89  php.academyvm.dev```
+      - ```192.170.88.89  adminer.academyvm.dev```
+      - ```192.170.88.89  xhprof.academyvm.dev```
+      - ```192.170.88.89  pimpmylog.academyvm.dev```
+      - ```192.170.88.89  dashboard.academyvm.dev```
 
     - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
 
@@ -114,6 +114,9 @@ By default, this VM includes the extras listed in the `config.yml` option `insta
       - adminer
       # - blackfire
       - drupalconsole
+      - drush
+      # - elasticsearch
+      # - java
       - mailhog
       # - memcached
       # - newrelic

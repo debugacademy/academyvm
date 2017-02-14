@@ -18,6 +18,10 @@ A list of the PHP packages to install (OS-specific by default). You'll likely wa
 
 _Note: If you're using Debian/Ubuntu, you also need to install `libapache2-mod-fastcgi` (for cgi/PHP-FPM) or `libapache2-mod-php7.0` (or a similar package depending on PHP version) if you want to use `mod_php` with Apache._
 
+    php_packages_extra: []
+
+A list of extra PHP packages to install without overriding the default list.
+
     php_enable_webserver: true
 
 If your usage of PHP is tied to a web server (e.g. Apache or Nginx), leave this default value. If you are using PHP server-side or to run some small application, set this value to `false` so this role doesn't attempt to interact with a web server.
@@ -97,6 +101,7 @@ Various defaults for PHP. Only used if `php_use_managed_ini` is set to `true`.
 
 The OpCache is included in PHP starting in version 5.5, and the following variables will only take effect if the version of PHP you have installed is 5.5 or greater.
 
+    php_opcache_zend_extension: "opcache.so"
     php_opcache_enable: "1"
     php_opcache_enable_cli: "0"
     php_opcache_memory_consumption: "96"
@@ -109,6 +114,8 @@ The OpCache is included in PHP starting in version 5.5, and the following variab
     php_opcache_max_file_size: "0"
 
 OpCache ini directives that are often customized on a system. Make sure you have enough memory and file slots allocated in the OpCache (`php_opcache_memory_consumption`, in MB, and `php_opcache_max_accelerated_files`) to contain all the PHP code you are running. If not, you may get less-than-optimal performance!
+
+For custom opcache.so location provide full path with `php_opcache_zend_extension`.
 
     php_opcache_conf_filename: [platform-specific]
 
@@ -151,6 +158,7 @@ Set this to `true` to install PHP from source instead of installing from package
 The version of PHP to install from source (a git branch, tag, or commit hash).
 
     php_source_clone_dir: "~/php-src"
+    php_source_clone_depth: 1
     php_source_install_path: "/opt/php"
     php_source_install_gmp_path: "/usr/include/x86_64-linux-gnu/gmp.h"
 
