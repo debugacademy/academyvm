@@ -58,7 +58,7 @@ This Quick Start Guide will help you quickly build a Drupal site on the Drupal V
 
 ### 1 - Install Vagrant and VirtualBox
 
-Download and install [Vagrant](https://www.vagrantup.com/downloads.html) **Version 1.8.5, NOT the latest!** and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+Download and install [Vagrant](https://www.vagrantup.com/downloads.html) and [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
 You can also use an alternative provider like Parallels or VMware. (Parallels Desktop 11+ requires the "Pro" or "Business" edition and the [Parallels Provider](http://parallels.github.io/vagrant-parallels/), and VMware requires the paid [Vagrant VMware integration plugin](http://www.vagrantup.com/vmware)).
 
@@ -89,16 +89,16 @@ Note: *If there are any errors during the course of running `vagrant up`, and it
   1. [Edit your hosts file](http://www.rackspace.com/knowledge_center/article/how-do-i-modify-my-hosts-file), adding the below lines so you can connect to the VM.
 
     - @Debug Academy: add each of the below lines to your hosts file so you can connect to the VM.
-      - ```192.170.88.89  academyvm.dev```
-      - ```192.170.88.89  dev-1.academyvm.dev```
-      - ```192.170.88.89  dev-2.academyvm.dev```
-      - ```192.170.88.89  stage-1.academyvm.dev```
-      - ```192.170.88.89  stage-2.academyvm.dev```
-      - ```192.170.88.89  php.academyvm.dev```
-      - ```192.170.88.89  adminer.academyvm.dev```
-      - ```192.170.88.89  xhprof.academyvm.dev```
-      - ```192.170.88.89  pimpmylog.academyvm.dev```
-      - ```192.170.88.89  dashboard.academyvm.dev```
+      - ```192.170.88.16  academyvm.dev```
+      - ```192.170.88.16  dev-1.academyvm.dev```
+      - ```192.170.88.16  dev-2.academyvm.dev```
+      - ```192.170.88.16  stage-1.academyvm.dev```
+      - ```192.170.88.16  stage-2.academyvm.dev```
+      - ```192.170.88.16  php.academyvm.dev```
+      - ```192.170.88.16  adminer.academyvm.dev```
+      - ```192.170.88.16  xhprof.academyvm.dev```
+      - ```192.170.88.16  pimpmylog.academyvm.dev```
+      - ```192.170.88.16  dashboard.academyvm.dev```
 
     - You must run `Vagrant reload` for new options, including these, to take effect if you have previously run `Vagrant up`.
 
