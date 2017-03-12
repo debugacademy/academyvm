@@ -126,6 +126,8 @@ By default, this VM includes the extras listed in the `config.yml` option `insta
       # - ruby
       # - selenium
       # - solr
+      # - tideways
+      # - upload-progress
       - varnish
       # - xdebug
       # - xhprof
