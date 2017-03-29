@@ -49,7 +49,7 @@ vagrant_synced_folders:
     id: had
     type: smb
     create: true
-    excluded_paths: ['.git/', '.tmp/', 'node_modules/', 'sites/default/files/', 'config/drupal', 'modules/custom', 'themes/custom']
+    excluded_paths: ['proj-me/.git/', 'proj-me/.tmp/', 'proj-me/node_modules/', 'proj-me/sites/default/files/', 'proj-me/config/drupal', 'proj-me/modules/custom', 'proj-me/themes/custom']
     options_override:
       owner: vagrant
       group: www-data
