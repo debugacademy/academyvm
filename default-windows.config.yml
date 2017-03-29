@@ -47,27 +47,12 @@ vagrant_synced_folders:
   - local_path: ../sites/dev-1
     destination: /var/www/dev-1
     id: had
-    type: rsync
+    type: smb
     create: true
     excluded_paths: ['.git/', '.tmp/', 'node_modules/', 'sites/default/files/', 'config/drupal', 'modules/custom', 'themes/custom']
     options_override:
       owner: vagrant
       group: www-data
-
-  - local_path: ../sites/dev-1/proj-me/config/drupal
-    destination: /var/www/dev-1/proj-me/config/drupal
-    type: "" # On Windows, on macOS "nfs"
-    create: true
-
-  - local_path: ../sites/dev-1/proj-me/web/modules/custom
-    destination: /var/www/dev-1/proj-me/web/modules/custom
-    type: "" # On Windows, on macOS "nfs"
-    create: true
-
-  - local_path: ../sites/dev-1/proj-me/web/themes/custom
-    destination: /var/www/dev-1/proj-me/web/themes/custom
-    type: "" # On Windows, on macOS "nfs"
-    create: true
 
   - local_path: ../sites/dev-2
     destination: /var/www/dev-2
