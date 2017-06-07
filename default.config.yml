@@ -6,26 +6,32 @@ vagrant_user: vagrant
 vagrant_synced_folder_default_type: nfs
 vagrant_gui: false
 
-ha_drupal_domain: dev-1.academyvm.dev
-ha_drupal_core_path: "/var/www/dev-1"
- 
-ha_prod_drupal_domain: stage-1.academyvm.dev
-ha_prod_drupal_core_path: "/var/www/stage-1"
- 
-cg_drupal_domain: dev-2.academyvm.dev
-cg_drupal_core_path: "/var/www/dev-2"
- 
-cg_prod_drupal_domain: stage-2.academyvm.dev
-cg_prod_drupal_core_path: "/var/www/stage-2"
-
-php_drupal_domain: php.academyvm.dev
-php_drupal_core_path: "/var/www/php"
-
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
 vagrant_hostname: academyvm.dev
 vagrant_machine_name: academyvm61
 vagrant_ip: 192.170.88.17
+
+# Subdomain names
+da_dev1: dev-1
+da_dev2: dev-2
+da_stage1: stage-1
+da_stage2: stage-2
+
+da_dev1_drupal_domain: "{{ da_dev1 }}.{{ vagrant_hostname }}"
+da_dev1_drupal_dir_path: "/var/www/{{ da_dev1 }}"
+
+da_stage1_drupal_domain: "{{ da_stage1 }}.{{ vagrant_hostname }}"
+da_stage1_drupal_dir_path: "/var/www/{{ da_stage1 }}"
+
+da_dev2_drupal_domain: "{{ da_dev2 }}.{{ vagrant_hostname }}"
+da_dev2_drupal_dir_path: "/var/www/{{ da_dev2 }}"
+
+da_stage2_drupal_domain: "{{ da_stage2 }}.{{ vagrant_hostname }}"
+da_stage2_drupal_dir_path: "/var/www/{{ da_stage2 }}"
+
+php_drupal_domain: "php.{{ vagrant_hostname }}"
+php_drupal_dir_path: /var/www/php
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -44,32 +50,32 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-  - local_path: ../sites/dev-1
-    destination: /var/www/dev-1
-    id: had
+  - local_path: "../sites/{{ da_dev1 }}"
+    destination: "{{ da_dev1_drupal_dir_path }}"
+    id: dev1
     type: nfs
     create: true
 
-  - local_path: ../sites/dev-2
-    destination: /var/www/dev-2
-    id: hap
+  - local_path: "../sites/{{ da_dev2 }}"
+    destination: "{{ da_dev2_drupal_dir_path }}"
+    id: dev2
     type: nfs
     create: true
 
-  - local_path: ../sites/stage-1
-    destination: /var/www/stage-1
-    id: cgd
+  - local_path: "../sites/{{ da_stage1 }}"
+    destination: "{{ da_stage1_drupal_dir_path }}"
+    id: stg1
     type: nfs
     create: true
 
-  - local_path: ../sites/stage-2
-    destination: /var/www/stage-2
-    id: cgp
+  - local_path: "../sites/{{ da_stage2 }}"
+    destination: "{{ da_stage2_drupal_dir_path }}"
+    id: stg2
     type: nfs
     create: true
 
   - local_path: ../sites/php
-    destination: /var/www/php
+    destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
     create: true
@@ -159,36 +165,37 @@ apache_vhost_php_fpm_parameters: |
 # Apache VirtualHosts. Add one for each site you are running inside the VM. For
 # multisite deployments, you can point multiple servernames at one documentroot.
 # View the geerlingguy.apache Ansible Role README for more options.
+da_proxy_pass_regex: ^/(.*\.php(/.*)?)$
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
     serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ ha_drupal_domain }}"
-    documentroot: "{{ ha_drupal_core_path }}"
+  - servername: "{{ da_dev1_drupal_domain }}"
+    documentroot: "{{ da_dev1_drupal_dir_path }}"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ ha_drupal_core_path }}"
+          ProxyPassMatch {{ da_proxy_pass_regex }} "fcgi://{{ php_fpm_listen }}{{ da_dev1_drupal_dir_path }}"
 
-  - servername: "{{ ha_prod_drupal_domain }}"
-    documentroot: "{{ ha_prod_drupal_core_path }}"
+  - servername: "{{ da_stage1_drupal_domain }}"
+    documentroot: "{{ da_stage1_drupal_dir_path }}"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ ha_prod_drupal_core_path }}"
+          ProxyPassMatch {{ da_proxy_pass_regex }} "fcgi://{{ php_fpm_listen }}{{ da_stage1_drupal_dir_path }}"
 
-  - servername: "{{ cg_drupal_domain }}"
-    documentroot: "{{ cg_drupal_core_path }}"
+  - servername: "{{ da_dev2_drupal_domain }}"
+    documentroot: "{{ da_dev2_drupal_dir_path }}"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ cg_drupal_core_path }}"
+          ProxyPassMatch {{ da_proxy_pass_regex }} "fcgi://{{ php_fpm_listen }}{{ da_dev2_drupal_dir_path }}"
 
-  - servername: "{{ cg_prod_drupal_domain }}"
-    documentroot: "{{ cg_prod_drupal_core_path }}"
+  - servername: "{{ da_stage2_drupal_domain }}"
+    documentroot: "{{ da_stage2_drupal_dir_path }}"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ cg_prod_drupal_core_path }}"
+          ProxyPassMatch {{ da_proxy_pass_regex }} "fcgi://{{ php_fpm_listen }}{{ da_stage2_drupal_dir_path }}"
 
   - servername: "{{ php_drupal_domain }}"
-    documentroot: "{{ php_drupal_core_path }}"
+    documentroot: "{{ php_drupal_dir_path }}"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_drupal_core_path }}"
+          ProxyPassMatch {{ da_proxy_pass_regex }} "fcgi://{{ php_fpm_listen }}{{ php_drupal_dir_path }}"
 
   - servername: "adminer.{{ vagrant_hostname }}"
     documentroot: "{{ adminer_install_dir }}"
@@ -224,24 +231,24 @@ nginx_hosts:
     root: "{{ drupal_core_path }}"
     is_php: true
 
-  - servername: "{{ ha_drupal_domain }}"
-    root: "{{ ha_drupal_core_path }}"
+  - servername: "{{ da_dev1_drupal_domain }}"
+    root: "{{ da_dev1_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ ha_prod_drupal_domain }}"
-    root: "{{ ha_prod_drupal_core_path }}"
+  - servername: "{{ da_stage1_drupal_domain }}"
+    root: "{{ da_stage1_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ cg_drupal_domain }}"
-    root: "{{ cg_drupal_core_path }}"
+  - servername: "{{ da_dev2_drupal_domain }}"
+    root: "{{ da_dev2_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ cg_prod_drupal_domain }}"
-    root: "{{ cg_prod_drupal_core_path }}"
+  - servername: "{{ da_stage2_drupal_domain }}"
+    root: "{{ da_stage2_drupal_dir_path }}"
     is_php: true
 
   - servername: "{{ php_drupal_domain }}"
-    root: "{{ php_drupal_core_path }}"
+    root: "{{ php_drupal_dir_path }}"
     is_php: true
 
   - server_name: "adminer.{{ vagrant_hostname }}"
