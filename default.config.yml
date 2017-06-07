@@ -25,7 +25,7 @@ php_drupal_core_path: "/var/www/php"
 # machine name, and IP address for each instance.
 vagrant_hostname: academyvm.dev
 vagrant_machine_name: academyvm61
-vagrant_ip: 192.170.88.16
+vagrant_ip: 192.170.88.17
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
