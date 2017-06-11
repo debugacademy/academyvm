@@ -45,36 +45,36 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: ../sites/public_html
+  - local_path: ../htdocs/public_html
     destination: /var/www/public_html
     type: nfs
     create: true
 
-  - local_path: "../sites/{{ da_dev1 }}"
+  - local_path: "../htdocs/{{ da_dev1 }}"
     destination: "{{ da_dev1_drupal_dir_path }}"
     id: dev1
     type: nfs
     create: true
 
-  - local_path: "../sites/{{ da_dev2 }}"
+  - local_path: "../htdocs/{{ da_dev2 }}"
     destination: "{{ da_dev2_drupal_dir_path }}"
     id: dev2
     type: nfs
     create: true
 
-  - local_path: "../sites/{{ da_stage1 }}"
+  - local_path: "../htdocs/{{ da_stage1 }}"
     destination: "{{ da_stage1_drupal_dir_path }}"
     id: stg1
     type: nfs
     create: true
 
-  - local_path: "../sites/{{ da_stage2 }}"
+  - local_path: "../htdocs/{{ da_stage2 }}"
     destination: "{{ da_stage2_drupal_dir_path }}"
     id: stg2
     type: nfs
     create: true
 
-  - local_path: ../sites/php
+  - local_path: ../htdocs/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
