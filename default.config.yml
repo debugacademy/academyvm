@@ -133,8 +133,8 @@ drupal_db_user: drupal
 drupal_db_password: drupal
 drupal_db_name: drupal
 
-# Settings for installing a Drupal site if 'install_site:' is 'true'.
-drupal_major_version: 7
+# Settings for installing a Drupal site if 'drupal_install_site:' is 'true'.
+drupal_major_version: 8
 drupal_domain: "{{ vagrant_hostname }}"
 drupal_site_name: "AcademyVM"
 drupal_install_profile: standard
