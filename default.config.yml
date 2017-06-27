@@ -298,7 +298,7 @@ postgresql_users:
 installed_extras:
   - adminer
   # - blackfire
-  # - drupalconsole
+  - drupalconsole
   - drush
   # - elasticsearch
   # - java
