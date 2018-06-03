@@ -353,7 +353,7 @@ firewall_disable_ufw: true
 # See version-specific notes: http://docs.drupalvm.com/en/latest/configurations/php/
 php_version: "7.1"
 php_install_recommends: no
-php_memory_limit: "192M"
+php_memory_limit: "384M"
 php_display_errors: "On"
 php_display_startup_errors: "On"
 php_realpath_cache_size: "1024K"
