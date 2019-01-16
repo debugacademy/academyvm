@@ -64,6 +64,12 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
+  - local_path: "../da-assignments"
+    destination: /var/www/da-assignments
+    id: assignments
+    type: nfs
+    create: true
+
   - local_path: "projects/{{ da_dev2 }}"
     destination: "{{ da_dev2_drupal_dir_path }}"
     id: dev2
@@ -185,6 +191,10 @@ apache_vhosts:
 
   - servername: dtv.academyvm.test
     documentroot: "{{ da_dev1_drupal_dir_path }}/dtv/web"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: da-assignments.academyvm.test
+    documentroot: /var/www/da-assignments
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: drupal.academyvm.test
