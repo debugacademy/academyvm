@@ -53,36 +53,36 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: ../htdocs/public_html
+  - local_path: projects
     destination: /var/www/public_html
     type: nfs
     create: true
 
-  - local_path: "../htdocs/{{ da_dev1 }}"
+  - local_path: "projects/{{ da_dev1 }}"
     destination: "{{ da_dev1_drupal_dir_path }}"
     id: dev1
     type: nfs
     create: true
 
-  - local_path: "../htdocs/{{ da_dev2 }}"
+  - local_path: "projects/{{ da_dev2 }}"
     destination: "{{ da_dev2_drupal_dir_path }}"
     id: dev2
     type: nfs
     create: true
 
-  - local_path: "../htdocs/{{ da_stage1 }}"
+  - local_path: "projects/{{ da_stage1 }}"
     destination: "{{ da_stage1_drupal_dir_path }}"
     id: stg1
     type: nfs
     create: true
 
-  - local_path: "../htdocs/{{ da_stage2 }}"
+  - local_path: "projects/{{ da_stage2 }}"
     destination: "{{ da_stage2_drupal_dir_path }}"
     id: stg2
     type: nfs
     create: true
 
-  - local_path: ../htdocs/php
+  - local_path: projects/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
@@ -181,6 +181,14 @@ apache_vhosts:
   - servername: "{{ drupal_domain }}"
     serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: dtv.academyvm.test
+    documentroot: "{{ da_dev1_drupal_dir_path }}/dtv/web"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: drupal.academyvm.test
+    documentroot: "{{ da_dev1_drupal_dir_path }}/drupal/web"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ da_dev1_drupal_domain }}"
@@ -283,6 +291,12 @@ mysql_databases:
   - name: "{{ drupal_db_name }}"
     encoding: utf8mb4
     collation: utf8mb4_general_ci
+  - name: dtv
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
+  - name: drupal2
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
 
 mysql_users:
   - name: "{{ drupal_db_user }}"
@@ -293,6 +307,8 @@ mysql_users:
 # PostgreSQL databases and users.
 postgresql_databases:
   - name: "{{ drupal_db_name }}"
+  - name: dtv
+  - name: drupal2
 
 postgresql_users:
   - name: "{{ drupal_db_user }}"
@@ -441,7 +457,8 @@ dashboard_install_dir: /var/www/dashboard
 known_hosts_path: ~/.ssh/known_hosts
 hostname_configure: true
 hostname_fqdn: "{{ vagrant_hostname }}"
-ssh_home: "{{ drupal_core_path }}"
+ssh_home: /var/www
 
 php_packages_extra:
   - php7.1-bcmath
+  - php7.1-bz2
