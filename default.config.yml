@@ -15,27 +15,27 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: academyvm.test
-vagrant_machine_name: academyvm8012
-vagrant_ip: 192.170.88.20
+vagrant_hostname: academyvm13.test
+vagrant_machine_name: academyvm8013
+vagrant_ip: 192.170.88.13
 
 # Subdomain names
-da_dev1: dev-1
-da_dev2: dev-2
-da_stage1: stage-1
-da_stage2: stage-2
+project1: p1
+drupaltv: dtv
+projectstg: p1-stg
+drupaltvstg: dtv-stg
 
-da_dev1_drupal_domain: "{{ da_dev1 }}.{{ vagrant_hostname }}"
-da_dev1_drupal_dir_path: "/var/www/{{ da_dev1 }}"
+project1_drupal_domain: "{{ project1 }}.{{ vagrant_hostname }}"
+project1_drupal_dir_path: "/var/www/{{ project1 }}"
 
-da_stage1_drupal_domain: "{{ da_stage1 }}.{{ vagrant_hostname }}"
-da_stage1_drupal_dir_path: "/var/www/{{ da_stage1 }}"
+projectstg_drupal_domain: "{{ projectstg }}.{{ vagrant_hostname }}"
+projectstg_drupal_dir_path: "/var/www/{{ projectstg }}"
 
-da_dev2_drupal_domain: "{{ da_dev2 }}.{{ vagrant_hostname }}"
-da_dev2_drupal_dir_path: "/var/www/{{ da_dev2 }}"
+drupaltv_drupal_domain: "{{ drupaltv }}.{{ vagrant_hostname }}"
+drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}"
 
-da_stage2_drupal_domain: "{{ da_stage2 }}.{{ vagrant_hostname }}"
-da_stage2_drupal_dir_path: "/var/www/{{ da_stage2 }}"
+drupaltv_stg_drupal_domain: "{{ drupaltvstg }}.{{ vagrant_hostname }}"
+drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}"
 
 php_drupal_domain: "php.{{ vagrant_hostname }}"
 php_drupal_dir_path: /var/www/php
@@ -52,42 +52,42 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: projects
+  - local_path: ../projects
     destination: /var/www/public_html
     type: nfs
     create: true
 
-  - local_path: "projects/{{ da_dev1 }}"
-    destination: "{{ da_dev1_drupal_dir_path }}"
-    id: dev1
+  - local_path: "../projects/{{ project1 }}"
+    destination: "{{ project1_drupal_dir_path }}"
+    id: p1
     type: nfs
     create: true
 
-  - local_path: "../da-assignments"
+  - local_path: "../projects/da-assignments"
     destination: /var/www/da-assignments
     id: assignments
     type: nfs
     create: true
 
-  - local_path: "projects/{{ da_dev2 }}"
-    destination: "{{ da_dev2_drupal_dir_path }}"
-    id: dev2
+  - local_path: "../projects/{{ drupaltv }}"
+    destination: "{{ drupaltv_drupal_dir_path }}"
+    id: dtv
     type: nfs
     create: true
 
-  - local_path: "projects/{{ da_stage1 }}"
-    destination: "{{ da_stage1_drupal_dir_path }}"
-    id: stg1
+  - local_path: "../projects/{{ projectstg }}"
+    destination: "{{ projectstg_drupal_dir_path }}"
+    id: p1stg
     type: nfs
     create: true
 
-  - local_path: "projects/{{ da_stage2 }}"
-    destination: "{{ da_stage2_drupal_dir_path }}"
-    id: stg2
+  - local_path: "../projects/{{ drupaltvstg }}"
+    destination: "{{ drupaltv_stg_drupal_dir_path }}"
+    id: dtvstg
     type: nfs
     create: true
 
-  - local_path: projects/php
+  - local_path: ../projects/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
@@ -189,7 +189,7 @@ apache_vhosts:
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: dtv.academyvm.test
-    documentroot: "{{ da_dev1_drupal_dir_path }}/dtv/web"
+    documentroot: "{{ project1_drupal_dir_path }}/dtv/web"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: da-assignments.academyvm.test
@@ -197,23 +197,23 @@ apache_vhosts:
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: drupal.academyvm.test
-    documentroot: "{{ da_dev1_drupal_dir_path }}/drupal/web"
+    documentroot: "{{ project1_drupal_dir_path }}/drupal/web"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ da_dev1_drupal_domain }}"
-    documentroot: "{{ da_dev1_drupal_dir_path }}"
+  - servername: "{{ project1_drupal_domain }}"
+    documentroot: "{{ project1_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ da_stage1_drupal_domain }}"
-    documentroot: "{{ da_stage1_drupal_dir_path }}"
+  - servername: "{{ projectstg_drupal_domain }}"
+    documentroot: "{{ projectstg_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ da_dev2_drupal_domain }}"
-    documentroot: "{{ da_dev2_drupal_dir_path }}"
+  - servername: "{{ drupaltv_drupal_domain }}"
+    documentroot: "{{ drupaltv_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ da_stage2_drupal_domain }}"
-    documentroot: "{{ da_stage2_drupal_dir_path }}"
+  - servername: "{{ drupaltv_stg_drupal_domain }}"
+    documentroot: "{{ drupaltv_stg_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ php_drupal_domain }}"
@@ -255,20 +255,20 @@ nginx_hosts:
     root: "{{ drupal_core_path }}"
     is_php: true
 
-  - servername: "{{ da_dev1_drupal_domain }}"
-    root: "{{ da_dev1_drupal_dir_path }}"
+  - servername: "{{ project1_drupal_domain }}"
+    root: "{{ project1_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ da_stage1_drupal_domain }}"
-    root: "{{ da_stage1_drupal_dir_path }}"
+  - servername: "{{ projectstg_drupal_domain }}"
+    root: "{{ projectstg_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ da_dev2_drupal_domain }}"
-    root: "{{ da_dev2_drupal_dir_path }}"
+  - servername: "{{ drupaltv_drupal_domain }}"
+    root: "{{ drupaltv_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ da_stage2_drupal_domain }}"
-    root: "{{ da_stage2_drupal_dir_path }}"
+  - servername: "{{ drupaltv_stg_drupal_domain }}"
+    root: "{{ drupaltv_stg_drupal_dir_path }}"
     is_php: true
 
   - servername: "{{ php_drupal_domain }}"
