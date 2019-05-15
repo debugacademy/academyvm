@@ -368,7 +368,7 @@ dashboard_install_dir: /var/www/dashboard
 known_hosts_path: ~/.ssh/known_hosts
 hostname_configure: true
 hostname_fqdn: "{{ vagrant_hostname }}"
-ssh_home: /var/www
+ssh_home: "{{ drupal_core_path }}"
 
 php_packages_extra:
   - php7.1-bcmath
