@@ -15,30 +15,13 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: academyvm13.test
-vagrant_machine_name: academyvm8013
-vagrant_ip: 192.170.88.13
+vagrant_hostname: vm.test
+vagrant_machine_name: vm01
+vagrant_ip: 192.172.88.11
 
 # Subdomain names
-project1: p1
-drupaltv: dtv
-projectstg: p1-stg
-drupaltvstg: dtv-stg
-
-project1_drupal_domain: "{{ project1 }}.{{ vagrant_hostname }}"
-project1_drupal_dir_path: "/var/www/{{ project1 }}"
-
-projectstg_drupal_domain: "{{ projectstg }}.{{ vagrant_hostname }}"
-projectstg_drupal_dir_path: "/var/www/{{ projectstg }}"
-
-drupaltv_drupal_domain: "{{ drupaltv }}.{{ vagrant_hostname }}"
-drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}"
-
-drupaltv_stg_drupal_domain: "{{ drupaltvstg }}.{{ vagrant_hostname }}"
-drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}"
-
-php_drupal_domain: "php.{{ vagrant_hostname }}"
-php_drupal_dir_path: /var/www/php
+php_domain: "php.{{ vagrant_hostname }}"
+php_dir_path: /var/www/php
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -52,43 +35,13 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: ../projects
-    destination: /var/www/public_html
-    type: nfs
-    create: true
-
-  - local_path: "../projects/{{ project1 }}"
-    destination: "{{ project1_drupal_dir_path }}"
-    id: p1
-    type: nfs
-    create: true
-
-  - local_path: "../projects/da-assignments"
-    destination: /var/www/da-assignments
-    id: assignments
-    type: nfs
-    create: true
-
-  - local_path: "../projects/{{ drupaltv }}"
-    destination: "{{ drupaltv_drupal_dir_path }}"
-    id: dtv
-    type: nfs
-    create: true
-
-  - local_path: "../projects/{{ projectstg }}"
-    destination: "{{ projectstg_drupal_dir_path }}"
-    id: p1stg
-    type: nfs
-    create: true
-
-  - local_path: "../projects/{{ drupaltvstg }}"
-    destination: "{{ drupaltv_stg_drupal_dir_path }}"
-    id: dtvstg
+  - local_path: ../projects/drupal
+    destination: /var/www/drupalvm
     type: nfs
     create: true
 
   - local_path: ../projects/php
-    destination: "{{ php_drupal_dir_path }}"
+    destination: "{{ php_dir_path }}"
     id: phpt
     type: nfs
     create: true
@@ -123,11 +76,12 @@ drush_make_options: "--no-gitinfofile"
 
 # Set 'drupal_build_makefile' to 'false' and this to 'true' if you are using a
 # composer based site deployment strategy.
-drupal_build_composer: false
+drupal_build_composer: true
 drupal_composer_path: "{{ config_dir }}/drupal.composer.json"
 drupal_composer_install_dir: "/var/www/drupalvm/drupal"
 drupal_composer_dependencies:
   - "drupal/devel:^1.2"
+  - "drush/drush"
 
 # Set this to 'true' and 'drupal_build_makefile', 'drupal_build_composer' to 'false'
 # if you are using Composer's create-project as a site deployment strategy.
@@ -137,7 +91,7 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 
 # Set this to 'false' if you don't need to install drupal (using the drupal_*
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
-drupal_install_site: false
+drupal_install_site: true
 
 # Required Drupal settings.
 drupal_core_path: "{{ drupal_composer_install_dir }}/web"
@@ -150,9 +104,9 @@ drupal_db_host: localhost
 # Settings for installing a Drupal site if 'drupal_install_site:' is 'true'.
 drupal_major_version: 8
 drupal_domain: "{{ vagrant_hostname }}"
-drupal_site_name: "AcademyVM"
-drupal_install_profile: standard
-drupal_enable_modules: [ 'devel' ]
+drupal_site_name: "Debug Academy Project"
+drupal_install_profile: umami
+# drupal_enable_modules: []
 drupal_account_name: admin
 drupal_account_pass: admin
 
@@ -188,36 +142,8 @@ apache_vhosts:
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: dtv.academyvm.test
-    documentroot: "{{ project1_drupal_dir_path }}/dtv/web"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: da-assignments.academyvm.test
-    documentroot: /var/www/da-assignments
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: drupal.academyvm.test
-    documentroot: "{{ project1_drupal_dir_path }}/drupal/web"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ project1_drupal_domain }}"
-    documentroot: "{{ project1_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ projectstg_drupal_domain }}"
-    documentroot: "{{ projectstg_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ drupaltv_drupal_domain }}"
-    documentroot: "{{ drupaltv_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ drupaltv_stg_drupal_domain }}"
-    documentroot: "{{ drupaltv_stg_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ php_drupal_domain }}"
-    documentroot: "{{ php_drupal_dir_path }}"
+  - servername: "{{ php_domain }}"
+    documentroot:  "{{ php_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "adminer.{{ vagrant_hostname }}"
@@ -255,24 +181,8 @@ nginx_hosts:
     root: "{{ drupal_core_path }}"
     is_php: true
 
-  - servername: "{{ project1_drupal_domain }}"
-    root: "{{ project1_drupal_dir_path }}"
-    is_php: true
-
-  - servername: "{{ projectstg_drupal_domain }}"
-    root: "{{ projectstg_drupal_dir_path }}"
-    is_php: true
-
-  - servername: "{{ drupaltv_drupal_domain }}"
-    root: "{{ drupaltv_drupal_dir_path }}"
-    is_php: true
-
-  - servername: "{{ drupaltv_stg_drupal_domain }}"
-    root: "{{ drupaltv_stg_drupal_dir_path }}"
-    is_php: true
-
-  - servername: "{{ php_drupal_domain }}"
-    root: "{{ php_drupal_dir_path }}"
+  - servername: "{{ php_domain }}"
+    root: "{{ php_dir_path }}"
     is_php: true
 
   - server_name: "adminer.{{ vagrant_hostname }}"
@@ -300,12 +210,6 @@ mysql_databases:
   - name: "{{ drupal_db_name }}"
     encoding: utf8mb4
     collation: utf8mb4_general_ci
-  - name: dtv
-    encoding: utf8mb4
-    collation: utf8mb4_general_ci
-  - name: drupal2
-    encoding: utf8mb4
-    collation: utf8mb4_general_ci
 
 mysql_users:
   - name: "{{ drupal_db_user }}"
@@ -316,8 +220,6 @@ mysql_users:
 # PostgreSQL databases and users.
 postgresql_databases:
   - name: "{{ drupal_db_name }}"
-  - name: dtv
-  - name: drupal2
 
 postgresql_users:
   - name: "{{ drupal_db_user }}"
@@ -337,7 +239,7 @@ installed_extras:
   - mailhog
   # - memcached
   # - newrelic
-  # - nodejs
+  - nodejs
   - pimpmylog
   # - redis
   - ruby
@@ -345,7 +247,7 @@ installed_extras:
   # - solr
   # - tideways
   # - upload-progress
-  - varnish
+  # - varnish
   # - xdebug
   # - xhprof # use `tideways` if you're installing PHP 7+
 
