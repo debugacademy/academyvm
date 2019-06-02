@@ -15,27 +15,31 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: academyvm13.test
+vagrant_hostname: vm13.test
 vagrant_machine_name: academyvm8013
 vagrant_ip: 192.170.88.13
 
 # Subdomain names
 project1: p1
+personal: personal
 drupaltv: dtv
 projectstg: p1-stg
 drupaltvstg: dtv-stg
 
 project1_drupal_domain: "{{ project1 }}.{{ vagrant_hostname }}"
-project1_drupal_dir_path: "/var/www/{{ project1 }}"
+project1_drupal_dir_path: "/var/www/{{ project1 }}/web"
 
 projectstg_drupal_domain: "{{ projectstg }}.{{ vagrant_hostname }}"
-projectstg_drupal_dir_path: "/var/www/{{ projectstg }}"
+projectstg_drupal_dir_path: "/var/www/{{ projectstg }}/web"
+
+personal_drupal_domain: "{{ personal }}.{{ vagrant_hostname }}"
+personal_drupal_dir_path: "/var/www/{{ personal }}/web"
 
 drupaltv_drupal_domain: "{{ drupaltv }}.{{ vagrant_hostname }}"
-drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}"
+drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}/web"
 
 drupaltv_stg_drupal_domain: "{{ drupaltvstg }}.{{ vagrant_hostname }}"
-drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}"
+drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}/web"
 
 php_drupal_domain: "php.{{ vagrant_hostname }}"
 php_drupal_dir_path: /var/www/php
@@ -52,42 +56,48 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: ../projects
+  - local_path: ../www
     destination: /var/www/public_html
     type: nfs
     create: true
 
-  - local_path: "../projects/{{ project1 }}"
+  - local_path: "../www/{{ project1 }}"
     destination: "{{ project1_drupal_dir_path }}"
     id: p1
     type: nfs
     create: true
 
-  - local_path: "../projects/da-assignments"
+  - local_path: "../www/{{ personal }}"
+    destination: "{{ personal_drupal_dir_path }}"
+    id: personal
+    type: nfs
+    create: true
+
+  - local_path: "../da-assignments"
     destination: /var/www/da-assignments
     id: assignments
     type: nfs
     create: true
 
-  - local_path: "../projects/{{ drupaltv }}"
+  - local_path: "../www/{{ drupaltv }}"
     destination: "{{ drupaltv_drupal_dir_path }}"
     id: dtv
     type: nfs
     create: true
 
-  - local_path: "../projects/{{ projectstg }}"
+  - local_path: "../www/{{ projectstg }}"
     destination: "{{ projectstg_drupal_dir_path }}"
     id: p1stg
     type: nfs
     create: true
 
-  - local_path: "../projects/{{ drupaltvstg }}"
+  - local_path: "../www/{{ drupaltvstg }}"
     destination: "{{ drupaltv_stg_drupal_dir_path }}"
     id: dtvstg
     type: nfs
     create: true
 
-  - local_path: ../projects/php
+  - local_path: ../www/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
@@ -183,25 +193,16 @@ apache_vhost_php_fpm_parameters: |
 # View the geerlingguy.apache Ansible Role README for more options.
 da_proxy_pass_regex: ^/(.*\.php(/.*)?)$
 apache_vhosts:
-  - servername: "{{ drupal_domain }}"
-    serveralias: "www.{{ drupal_domain }}"
-    documentroot: "{{ drupal_core_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: dtv.academyvm.test
-    documentroot: "{{ project1_drupal_dir_path }}/dtv/web"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: da-assignments.academyvm.test
+  - servername: da-assignments.test
     documentroot: /var/www/da-assignments
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: drupal.academyvm.test
-    documentroot: "{{ project1_drupal_dir_path }}/drupal/web"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ project1_drupal_domain }}"
     documentroot: "{{ project1_drupal_dir_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
+  - servername: "{{ personal_drupal_domain }}"
+    documentroot: "{{ personal_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ projectstg_drupal_domain }}"
@@ -257,6 +258,10 @@ nginx_hosts:
 
   - servername: "{{ project1_drupal_domain }}"
     root: "{{ project1_drupal_dir_path }}"
+    is_php: true
+
+  - servername: "{{ personal_drupal_domain }}"
+    root: "{{ personal_drupal_dir_path }}"
     is_php: true
 
   - servername: "{{ projectstg_drupal_domain }}"
@@ -337,7 +342,7 @@ installed_extras:
   - mailhog
   # - memcached
   # - newrelic
-  # - nodejs
+  - nodejs
   - pimpmylog
   # - redis
   - ruby
