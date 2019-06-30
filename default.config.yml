@@ -36,10 +36,10 @@ personal_drupal_domain: "{{ personal }}.{{ vagrant_hostname }}"
 personal_drupal_dir_path: "/var/www/{{ personal }}/web"
 
 drupaltv_drupal_domain: "{{ drupaltv }}.{{ vagrant_hostname }}"
-drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}/web"
+drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}"
 
 drupaltv_stg_drupal_domain: "{{ drupaltvstg }}.{{ vagrant_hostname }}"
-drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}/web"
+drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}"
 
 php_drupal_domain: "php.{{ vagrant_hostname }}"
 php_drupal_dir_path: /var/www/php
