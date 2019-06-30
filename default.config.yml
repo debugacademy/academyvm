@@ -198,7 +198,7 @@ apache_vhosts:
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ project1_drupal_domain }}"
-    documentroot: "{{ project1_drupal_dir_path }}"
+    documentroot: /var/www/public_html/p1
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ personal_drupal_domain }}"
