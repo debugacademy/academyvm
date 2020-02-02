@@ -15,7 +15,7 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: vm14vagrant.test
+vagrant_hostname: vm14.test
 vagrant_machine_name: academyvm8014
 vagrant_ip: 192.170.88.14
 
@@ -48,13 +48,13 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: "../../projects/{{ project1 }}"
+  - local_path: "../{{ project1 }}"
     destination: "/var/www/html"
     id: p1
     type: nfs
     create: false
 
-  - local_path: "../../projects/{{ personal }}"
+  - local_path: "../projects/{{ personal }}"
     destination: "{{ personal_drupal_dir_path }}"
     id: personal
     type: nfs
@@ -66,13 +66,13 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-  - local_path: "../../projects/{{ drupaltv }}"
+  - local_path: "../projects/{{ drupaltv }}"
     destination: "{{ drupaltv_drupal_dir_path }}"
     id: dtv
     type: nfs
     create: true
 
-  - local_path: ../../projects/php
+  - local_path: ../projects/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
@@ -173,7 +173,7 @@ apache_vhosts:
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ project1_drupal_domain }}"
-    documentroot: /var/www/public_html/p1
+    documentroot: "{{ project1_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ personal_drupal_domain }}"
