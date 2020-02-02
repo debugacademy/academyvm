@@ -20,7 +20,7 @@ vagrant_machine_name: academyvm8014
 vagrant_ip: 192.170.88.14
 
 # Subdomain names
-project1: p1
+project1: proj
 personal: personal
 drupaltv: dtv
 
@@ -50,7 +50,7 @@ vagrant_synced_folders:
   # the drupal-vm folder.
   - local_path: "../{{ project1 }}"
     destination: "/var/www/html"
-    id: p1
+    id: proj
     type: nfs
     create: false
 
