@@ -15,31 +15,23 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: vm13.test
-vagrant_machine_name: academyvm8013
+vagrant_hostname: vm14.test
+vagrant_machine_name: academyvm8014
 vagrant_ip: 192.170.88.13
 
 # Subdomain names
 project1: p1
 personal: personal
 drupaltv: dtv
-projectstg: p1-stg
-drupaltvstg: dtv-stg
 
 project1_drupal_domain: "{{ project1 }}.{{ vagrant_hostname }}"
 project1_drupal_dir_path: "/var/www/{{ project1 }}/web"
-
-projectstg_drupal_domain: "{{ projectstg }}.{{ vagrant_hostname }}"
-projectstg_drupal_dir_path: "/var/www/{{ projectstg }}/web"
 
 personal_drupal_domain: "{{ personal }}.{{ vagrant_hostname }}"
 personal_drupal_dir_path: "/var/www/{{ personal }}/web"
 
 drupaltv_drupal_domain: "{{ drupaltv }}.{{ vagrant_hostname }}"
 drupaltv_drupal_dir_path: "/var/www/{{ drupaltv }}"
-
-drupaltv_stg_drupal_domain: "{{ drupaltvstg }}.{{ vagrant_hostname }}"
-drupaltv_stg_drupal_dir_path: "/var/www/{{ drupaltvstg }}"
 
 php_drupal_domain: "php.{{ vagrant_hostname }}"
 php_drupal_dir_path: /var/www/php
@@ -82,18 +74,6 @@ vagrant_synced_folders:
   - local_path: "../www/{{ drupaltv }}"
     destination: "{{ drupaltv_drupal_dir_path }}"
     id: dtv
-    type: nfs
-    create: true
-
-  - local_path: "../www/{{ projectstg }}"
-    destination: "{{ projectstg_drupal_dir_path }}"
-    id: p1stg
-    type: nfs
-    create: true
-
-  - local_path: "../www/{{ drupaltvstg }}"
-    destination: "{{ drupaltv_stg_drupal_dir_path }}"
-    id: dtvstg
     type: nfs
     create: true
 
@@ -205,16 +185,8 @@ apache_vhosts:
     documentroot: "{{ personal_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
-  - servername: "{{ projectstg_drupal_domain }}"
-    documentroot: "{{ projectstg_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
   - servername: "{{ drupaltv_drupal_domain }}"
     documentroot: "{{ drupaltv_drupal_dir_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-
-  - servername: "{{ drupaltv_stg_drupal_domain }}"
-    documentroot: "{{ drupaltv_stg_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ php_drupal_domain }}"
@@ -264,16 +236,8 @@ nginx_hosts:
     root: "{{ personal_drupal_dir_path }}"
     is_php: true
 
-  - servername: "{{ projectstg_drupal_domain }}"
-    root: "{{ projectstg_drupal_dir_path }}"
-    is_php: true
-
   - servername: "{{ drupaltv_drupal_domain }}"
     root: "{{ drupaltv_drupal_dir_path }}"
-    is_php: true
-
-  - servername: "{{ drupaltv_stg_drupal_domain }}"
-    root: "{{ drupaltv_stg_drupal_dir_path }}"
     is_php: true
 
   - servername: "{{ php_drupal_domain }}"
