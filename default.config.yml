@@ -20,7 +20,7 @@ vagrant_machine_name: academyvm8014
 vagrant_ip: 192.170.88.14
 
 # Subdomain names
-project1: proj
+project1: "proj-cg"
 personal: personal
 drupaltv: dtv
 
