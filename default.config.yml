@@ -15,9 +15,9 @@ vagrant_gui: false
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-vagrant_hostname: vm14.test
+vagrant_hostname: vm14vagrant.test
 vagrant_machine_name: academyvm8014
-vagrant_ip: 192.170.88.13
+vagrant_ip: 192.170.88.14
 
 # Subdomain names
 project1: p1
@@ -25,7 +25,7 @@ personal: personal
 drupaltv: dtv
 
 project1_drupal_domain: "{{ project1 }}.{{ vagrant_hostname }}"
-project1_drupal_dir_path: "/var/www/{{ project1 }}/web"
+project1_drupal_dir_path: "/var/www/html/web"
 
 personal_drupal_domain: "{{ personal }}.{{ vagrant_hostname }}"
 personal_drupal_dir_path: "/var/www/{{ personal }}/web"
@@ -48,18 +48,13 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: ../www
-    destination: /var/www/public_html
-    type: nfs
-    create: true
-
-  - local_path: "../www/{{ project1 }}"
-    destination: "{{ project1_drupal_dir_path }}"
+  - local_path: "../../projects/{{ project1 }}"
+    destination: "/var/www/html"
     id: p1
     type: nfs
-    create: true
+    create: false
 
-  - local_path: "../www/{{ personal }}"
+  - local_path: "../../projects/{{ personal }}"
     destination: "{{ personal_drupal_dir_path }}"
     id: personal
     type: nfs
@@ -71,13 +66,13 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-  - local_path: "../www/{{ drupaltv }}"
+  - local_path: "../../projects/{{ drupaltv }}"
     destination: "{{ drupaltv_drupal_dir_path }}"
     id: dtv
     type: nfs
     create: true
 
-  - local_path: ../www/php
+  - local_path: ../../projects/php
     destination: "{{ php_drupal_dir_path }}"
     id: phpt
     type: nfs
@@ -132,9 +127,9 @@ drupal_install_site: false
 # Required Drupal settings.
 drupal_core_path: "{{ drupal_composer_install_dir }}/web"
 drupal_core_owner: "{{ drupalvm_user }}"
-drupal_db_user: drupal
-drupal_db_password: drupal
-drupal_db_name: drupal
+drupal_db_user: db
+drupal_db_password: db
+drupal_db_name: db
 drupal_db_host: localhost
 
 # Settings for installing a Drupal site if 'drupal_install_site:' is 'true'.
@@ -435,7 +430,7 @@ dashboard_install_dir: /var/www/dashboard
 known_hosts_path: ~/.ssh/known_hosts
 hostname_configure: true
 hostname_fqdn: "{{ vagrant_hostname }}"
-ssh_home: /var/www
+ssh_home: /var/www/html/web
 
 php_packages_extra:
   - php7.1-bcmath
