@@ -54,6 +54,12 @@ vagrant_synced_folders:
     type: nfs
     create: false
 
+  - local_path: "../drupal"
+    destination: "/var/www/html"
+    id: drupalproj
+    type: nfs
+    create: false
+
   - local_path: "../projects/{{ personal }}"
     destination: "{{ personal_drupal_dir_path }}"
     id: personal
@@ -176,6 +182,10 @@ apache_vhosts:
     documentroot: "{{ project1_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
+  - servername: drupal.debugacademy.test
+    documentroot: "{{ project1_drupal_dir_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
   - servername: "{{ personal_drupal_domain }}"
     documentroot: "{{ personal_drupal_dir_path }}"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
@@ -224,6 +234,10 @@ nginx_hosts:
     is_php: true
 
   - servername: "{{ project1_drupal_domain }}"
+    root: "{{ project1_drupal_dir_path }}"
+    is_php: true
+
+  - servername: drupal.debugacademy.test
     root: "{{ project1_drupal_dir_path }}"
     is_php: true
 
